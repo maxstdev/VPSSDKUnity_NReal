@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 7068059249072869789}
   - component: {fileID: 7068059249072869786}
   - component: {fileID: 7068059249072869784}
-  - component: {fileID: 1692156622643177299}
   m_Layer: 0
   m_Name: VPSStudio
   m_TagString: Untagged
@@ -45,11 +44,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca46fa553401cc04fbd99c8309ad5a77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vpsPath: /Users/acper/work/VPS_Studio/MaxstVPSUnity/Assets/../../VPSData/studio/yangjae_outdoor
-  vpsServerName: yangjae_outdoor
-  selectIndex: 14
-  vpsSimulatePath: /Users/acper/work/VPS_Studio/MaxstVPSUnity/Assets/../../VPSData/simulate/yangjae_outdoor/yangjae_outdoor_maxvi_simulation
-  simulate_selectIndex: 0
+  vpsPath: /Users/acper/work/VPS_Studio/VPSSDKUnity_github/Assets/../../VPSData/VPSMap/yangjae_indoor
+  vpsServerName: yangjae_indoor
+  selectIndex: 19
+  vpsSimulatePath: /Users/acper/work/VPS_Studio/VPSSDKUnity_github/Assets/../../VPSData/VPSSimulationData/yangjae_indoor/yangjae_indoor_spot_simulation_2
+  simulate_selectIndex: 1
   meshObject: {fileID: 0}
   rootTrackable: {fileID: 0}
 --- !u!114 &7068059249072869784
@@ -66,18 +65,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraPrefab: {fileID: 1000012582738516, guid: 500197d0c8776c145952f0591bdfb64a,
     type: 3}
---- !u!114 &1692156622643177299
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7068059249072869767}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c789bd798807943178096a05e8b91e46, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  positionDistance: 3
-  arrowPrefab: {fileID: 0}
-  rootTrackable: {fileID: 0}

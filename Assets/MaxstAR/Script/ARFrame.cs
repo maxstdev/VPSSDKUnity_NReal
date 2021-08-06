@@ -63,6 +63,8 @@ namespace maxstAR
 		private ARTrackingState arTrackingState;
 		private ARLocationRecognitionState arLocationRecognitionState;
 		private ARTrackingFailureReason arTrackingFailureReason;
+		private string arLocalizerLocation;
+		private byte[] locationByte = new byte[1000];
 
 		internal ARFrame(ulong cPtr)
 		{
@@ -77,6 +79,10 @@ namespace maxstAR
 			arTrackingState = (ARTrackingState)NativeAPI.maxst_ARFrame_getARTrackingState(arFrameCPtr);
 			arLocationRecognitionState = (ARLocationRecognitionState)NativeAPI.maxst_ARFrame_getARLocationRecognitionState(arFrameCPtr);
 			arTrackingFailureReason = (ARTrackingFailureReason)NativeAPI.maxst_ARFrame_getARTrackingFailureReason(arFrameCPtr);
+			
+			Array.Clear(locationByte, 0, locationByte.Length);
+			NativeAPI.maxst_ARFrame_getARLocalizerLocation(arFrameCPtr, locationByte);
+			arLocalizerLocation = Encoding.UTF8.GetString(locationByte).TrimEnd('\0');
 		}
 
 		/// <summary>
@@ -184,5 +190,10 @@ namespace maxstAR
 
 			return m1;
 		}
+
+		public string GetARLocalizerLocation()
+        {
+			return arLocalizerLocation;
+        }
 	}
 }

@@ -79,6 +79,11 @@ namespace maxstAR
             NativeAPI.maxst_TrackerManager_removeTrackerData(trackingFileName);
         }
 
+		public void ReplaceServerIP(string serverIP)
+        {
+			NativeAPI.maxst_TrackerManager_replaceServerIP(serverIP);
+        }
+
 		/// <summary>Load the Trackable data.</summary>
 		public void LoadTrackerData()
 		{

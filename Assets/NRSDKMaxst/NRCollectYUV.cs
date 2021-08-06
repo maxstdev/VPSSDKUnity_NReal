@@ -9,12 +9,8 @@ using maxstAR;
 
 public class NRCollectYUV : NRRGBCamTextureYUV
 {
-    private bool _isSave = false;
-    private DateTime _timeStamp;
-    private string _saveFolderPath;
 
     private Matrix4x4 _rgbEyeToHeadPose;
-    private Vector4 _rgbIntrinsic;
     private bool isFirst = true;
 
     private float[] localPose = new float[16];
@@ -28,7 +24,6 @@ public class NRCollectYUV : NRRGBCamTextureYUV
 
     protected override void OnRawDataUpdate(FrameRawData rgbRawDataFrame)
     {
-        //base.OnRawDataUpdate(rgbRawDataFrame);
 
         if (isFirst)
         {
@@ -73,8 +68,8 @@ public class NRCollectYUV : NRRGBCamTextureYUV
 
             Matrix4x4 Mrl = GetLeft2RightHandedMatrix();
 
-            Matrix4x4 Mwel = Mwh * Mhe; // Left-handed Mwe
-            Matrix4x4 Mwer = Mrl * Mwel * Mrl; // Right-handed Mwe
+            Matrix4x4 Mwel = Mwh * Mhe;
+            Matrix4x4 Mwer = Mrl * Mwel * Mrl;
 
             localPose[0] = Mwer.m00;
             localPose[1] = Mwer.m10;
@@ -120,8 +115,8 @@ public class NRCollectYUV : NRRGBCamTextureYUV
 
             Matrix4x4 Mrl = GetLeft2RightHandedMatrix();
 
-            Matrix4x4 Mwel = Mwh * Mhe; // Left-handed Mwe
-            Matrix4x4 Mwer = Mrl * Mwel * Mrl; // Right-handed Mwe
+            Matrix4x4 Mwel = Mwh * Mhe;
+            Matrix4x4 Mwer = Mrl * Mwel * Mrl;
 
 
             tempPose[0] = Mwer.m00;
@@ -144,11 +139,9 @@ public class NRCollectYUV : NRRGBCamTextureYUV
             tempPose[14] = Mwer.m23;
             tempPose[15] = Mwer.m33;
 
-            CameraDeviceInternal.GetInstance().SetSyncCameraFrameAndPoseAndTimestamp(null, 0, tempPose, timestamp);
+            CameraDeviceInternal.GetInstance().SetSyncCameraFrameAndPoseAndTimestamp(null, 0, tempPose, timestamp, 1, 0);
         }
-        
     }
-
 
     private static Matrix4x4 GetLeft2RightHandedMatrix()
     {

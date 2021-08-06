@@ -82,9 +82,6 @@ public class VPSStudioController : MonoBehaviour
     }
 
     [SerializeField]
-    private GameObject rootTrackable;
-
-    [SerializeField]
     public static string vpsName = "";
 
     public int GetSelectedIndex()
@@ -111,44 +108,51 @@ public class VPSStudioController : MonoBehaviour
         referenceCameraController.Clear();
         referenceCameraController.MakeCameras();
 
-        if (rootTrackable == null)
-        {
-            Debug.LogError("Can't find TrackingObject. You need to add TrackingObject in VPStudioController.");
-            return;
-        }
-
-        ClearMesh();
-
-        EditorCoroutineUtility.StartCoroutine(LoadAssetResource(vpsPath, vpsName, rootTrackable), this);
+        EditorCoroutineUtility.StartCoroutine(LoadAssetResource(vpsPath, vpsName), this);
     }
 
-    public IEnumerator LoadAssetResource(string path, string vpsName, GameObject attachObject)
+    public IEnumerator LoadAssetResource(string path, string vpsName)
     {
-        string destinationfolderPath = Application.streamingAssetsPath + "/../MaxstAR/Contents/" + vpsName;
+        string destinationfolderPath = Application.streamingAssetsPath + Path.DirectorySeparatorChar + ".." + Path.DirectorySeparatorChar + "MaxstAR" + Path.DirectorySeparatorChar + "Contents" + Path.DirectorySeparatorChar + vpsName;
         if (!Directory.Exists(destinationfolderPath))
         {
             Directory.CreateDirectory(destinationfolderPath);
         }
 
-        string fbx_url = path + "/" + vpsName + ".fbx";
-        string fbx_url_dest = destinationfolderPath + "/" + vpsName + ".fbx";
-        string fbxmeta_url = path + "/" + vpsName + ".fbx.meta";
-        string fbxmeta_url_dest = destinationfolderPath + "/" + vpsName + ".fbx.meta";
-        string prefab_url = path + "/" + vpsName + ".prefab";
-        string prefab_url_dest = destinationfolderPath + "/" + vpsName + ".prefab";
-        string prefab_meta_url = path + "/" + vpsName + ".prefab.meta";
-        string prefab_meta_url_dest = destinationfolderPath + "/" + vpsName + ".prefab.meta";
-        System.IO.File.Copy(fbx_url, fbx_url_dest, true);
-        System.IO.File.Copy(fbxmeta_url, fbxmeta_url_dest, true);
-        System.IO.File.Copy(prefab_url, prefab_url_dest, true);
-        System.IO.File.Copy(prefab_meta_url, prefab_meta_url_dest, true);
+        string mapPath = path;
+        string[] files = Directory.GetFiles(mapPath);
+        string destinationFolder = destinationfolderPath;
+        List<string> loadPrefabs = new List<string>();
+        foreach (string file in files)
+        {
+            string destinationFile = "";
+            string extension = Path.GetExtension(file);
 
+            if (extension == ".fbx" || extension == ".meta" || extension == ".prefab")
+            {
+                destinationFile = destinationFolder + Path.DirectorySeparatorChar + Path.GetFileName(file);
+                if (Path.GetFileNameWithoutExtension(destinationFile).Contains("Trackable") && Path.GetExtension(destinationFile) == ".prefab")
+                {
+                    loadPrefabs.Add(destinationFile);
+                }
+            }
+
+            if (destinationFile != "")
+            {
+                System.IO.File.Copy(file, destinationFile, true);
+            }
+        }
+      
         yield return new WaitForEndOfFrame();
 
         AssetDatabase.Refresh();
+       
 
-        meshObject = PrefabUtility.LoadPrefabContents(destinationfolderPath + "/" + vpsName + ".prefab");
-        meshObject.transform.parent = attachObject.transform;
+        foreach(string eachLoadFile in loadPrefabs)
+        {
+            GameObject local_meshObject = PrefabUtility.LoadPrefabContents(eachLoadFile);
+            meshObject = Instantiate(local_meshObject);
+        }
     }
 
     public void ClearMesh()
@@ -166,16 +170,15 @@ public class VPSStudioController : MonoBehaviour
             }
         }
 
-        string destinationfolderPath = Application.streamingAssetsPath + "/../MaxstAR/Contents/" + vpsName;
-        if (Directory.Exists(destinationfolderPath))
-        {
-            Directory.Delete(destinationfolderPath, true);
-            if (File.Exists(destinationfolderPath + ".meta"))
-            {
-                File.Delete(destinationfolderPath + ".meta");
-            }
-            
-        }
+        //string destinationfolderPath = Application.streamingAssetsPath + "/../MaxstAR/Contents/" + vpsName;
+        //if (Directory.Exists(destinationfolderPath))
+        //{
+        //    Directory.Delete(destinationfolderPath, true);
+        //    if (File.Exists(destinationfolderPath + ".meta"))
+        //    {
+        //        File.Delete(destinationfolderPath + ".meta");
+        //    }
+        //}
 
         AssetDatabase.Refresh();
     }

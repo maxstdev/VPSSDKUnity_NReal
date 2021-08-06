@@ -83,7 +83,7 @@ namespace maxstAR
         public static extern void maxst_CameraDevice_setNewVPSCameraPoseAndTimestamp(float[] pose, ulong timestamp);
 
         [DllImport(MaxstARLibName)]
-        public static extern void maxst_CameraDevice_setSyncCameraFrameAndPoseAndTimestamp(IntPtr[] textureIds, int textureLength, float[] pose, ulong timestamp);
+        public static extern void maxst_CameraDevice_setSyncCameraFrameAndPoseAndTimestamp(IntPtr[] textureIds, int textureLength, float[] pose, ulong timestamp, int trackingState, int trackingFailureReason);
 
         #endregion
 
@@ -105,6 +105,9 @@ namespace maxstAR
 
         [DllImport(MaxstARLibName)]
         public static extern void maxst_TrackerManager_removeTrackerData(string trackingFileName = "");
+
+        [DllImport(MaxstARLibName)]
+        public static extern void maxst_TrackerManager_replaceServerIP(string serverIP);
 
         [DllImport(MaxstARLibName)]
         public static extern void maxst_TrackerManager_loadTrackerData();
@@ -174,6 +177,9 @@ namespace maxstAR
 
         [DllImport(MaxstARLibName)]
         public static extern int maxst_ARFrame_getARTrackingFailureReason(ulong arFrame_cPtr);
+
+        [DllImport(MaxstARLibName)]
+        public static extern void maxst_ARFrame_getARLocalizerLocation(ulong arFrame_cPtr, byte[] data);
 
     }
 }

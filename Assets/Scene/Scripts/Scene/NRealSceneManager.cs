@@ -12,11 +12,16 @@ public class NRealSceneManager : MonoBehaviour
     private VPSStudioController vPSStudioController = null;
 
     public List<GameObject> disableObjects = new List<GameObject>();
-    public GameObject rootTrackable;
     public List<GameObject> occlusionObjects = new List<GameObject>();
+    private List<VPSTrackable> vPSTrackablesList = new List<VPSTrackable>();
 
     public Material buildingMaterial;
     public Material runtimeBuildingMaterial;
+
+    public GameObject maxstLogObject;
+
+    public bool isOcclusion = true;
+    private string currentLocalizerLocation = "";
 
     private string serverName = "";
 
@@ -37,9 +42,14 @@ public class NRealSceneManager : MonoBehaviour
             vPSStudioController.gameObject.SetActive(false);
         }
 
-        if (rootTrackable == null)
+        VPSTrackable[] vPSTrackables = FindObjectsOfType<VPSTrackable>(true);
+        if (vPSTrackables != null)
         {
-            Debug.LogError("You need to add Root Trackable.");
+            vPSTrackablesList.AddRange(vPSTrackables);
+        }
+        else
+        {
+            Debug.LogError("You need to add VPSTrackables.");
         }
 
         foreach (GameObject eachObject in disableObjects)
@@ -53,13 +63,21 @@ public class NRealSceneManager : MonoBehaviour
     void Start()
     {
 
-        foreach (GameObject eachGameObject in occlusionObjects)
+        if (isOcclusion)
         {
-            Renderer[] cullingRenderer = eachGameObject.GetComponentsInChildren<Renderer>();
-            foreach (Renderer eachRenderer in cullingRenderer)
+            foreach (GameObject eachGameObject in occlusionObjects)
             {
-                eachRenderer.material.renderQueue = 1900;
-                eachRenderer.material = runtimeBuildingMaterial;
+                if (eachGameObject == null)
+                {
+                    continue;
+                }
+
+                Renderer[] cullingRenderer = eachGameObject.GetComponentsInChildren<Renderer>();
+                foreach (Renderer eachRenderer in cullingRenderer)
+                {
+                    eachRenderer.material.renderQueue = 1900;
+                    eachRenderer.material = runtimeBuildingMaterial;
+                }
             }
         }
 
@@ -91,11 +109,33 @@ public class NRealSceneManager : MonoBehaviour
             arCamera.transform.rotation = MatrixUtils.QuaternionFromMatrix(targetPose);
             arCamera.transform.localScale = MatrixUtils.ScaleFromMatrix(targetPose);
 
-            rootTrackable.SetActive(true);
+            string localizerLocation = arFrame.GetARLocalizerLocation();
+
+            if (currentLocalizerLocation != localizerLocation)
+            {
+                currentLocalizerLocation = localizerLocation;
+                foreach (VPSTrackable eachTrackable in vPSTrackablesList)
+                {
+                    bool isLocationInclude = false;
+                    foreach (string eachLocation in eachTrackable.localizerLocation)
+                    {
+                        if (currentLocalizerLocation == eachLocation)
+                        {
+                            isLocationInclude = true;
+                            break;
+                        }
+                    }
+                    eachTrackable.gameObject.SetActive(isLocationInclude);
+                }
+            }
         }
         else
         {
-            rootTrackable.SetActive(false);
+            foreach (VPSTrackable eachTrackable in vPSTrackablesList)
+            {
+                eachTrackable.gameObject.SetActive(false);
+            }
+            currentLocalizerLocation = "";
         }
     }
 

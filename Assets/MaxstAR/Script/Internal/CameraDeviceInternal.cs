@@ -269,9 +269,9 @@ namespace maxstAR
         /// <param name="textureLength">Lenght of image texture id</param>
         /// <param name="pose">Camera pose</param>
         /// <param name="timestamp">Timestamp</param>
-        public void SetSyncCameraFrameAndPoseAndTimestamp(IntPtr[] textureIds, int textureLength, float[] pose, ulong timestamp)
+        public void SetSyncCameraFrameAndPoseAndTimestamp(IntPtr[] textureIds, int textureLength, float[] pose, ulong timestamp, int trackingState, int trackingFailureReason)
         {
-            NativeAPI.maxst_CameraDevice_setSyncCameraFrameAndPoseAndTimestamp(textureIds, textureLength, pose, timestamp);
+            NativeAPI.maxst_CameraDevice_setSyncCameraFrameAndPoseAndTimestamp(textureIds, textureLength, pose, timestamp, trackingState, trackingFailureReason);
         }
     }
 }
