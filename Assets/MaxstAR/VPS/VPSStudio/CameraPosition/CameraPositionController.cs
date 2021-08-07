@@ -270,7 +270,7 @@ public class CameraPositionController : MonoBehaviour
 
         string[] SplitText = text.Split(',');
         PathModel pathModel = new PathModel();
-        pathModel.id = ""+number;
+        pathModel.location = ""+number;
 
         pathModel.x = float.Parse(SplitText[18]);
         pathModel.y = float.Parse(SplitText[19]);

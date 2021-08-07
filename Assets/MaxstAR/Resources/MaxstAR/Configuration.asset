@@ -12,8 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11bf4144a3afcce41bc4a9274cd5ee65, type: 3}
   m_Name: Configuration
   m_EditorClassIdentifier: 
-  LicenseKey: rkA8n/pjpufEMqfP4JbzCSiSsCj3HSKgGkfu+bJD7TU=
   WebcamType: 0
   CameraType: 0
-  CameraResolution: 2
-  WearableType: 0
+  CameraResolution: 1

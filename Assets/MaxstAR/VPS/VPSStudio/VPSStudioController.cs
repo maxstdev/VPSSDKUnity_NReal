@@ -154,38 +154,9 @@ public class VPSStudioController : MonoBehaviour
             meshObject = Instantiate(local_meshObject);
         }
     }
-
-    public void ClearMesh()
-    {
-        if (meshObject != null)
-        {
-            DestroyImmediate(meshObject);
-        }
-        else
-        {
-            meshObject = GameObject.Find(vpsName);
-            if (meshObject)
-            {
-                DestroyImmediate(meshObject);
-            }
-        }
-
-        //string destinationfolderPath = Application.streamingAssetsPath + "/../MaxstAR/Contents/" + vpsName;
-        //if (Directory.Exists(destinationfolderPath))
-        //{
-        //    Directory.Delete(destinationfolderPath, true);
-        //    if (File.Exists(destinationfolderPath + ".meta"))
-        //    {
-        //        File.Delete(destinationfolderPath + ".meta");
-        //    }
-        //}
-
-        AssetDatabase.Refresh();
-    }
     
     public void Clear()
     {
-        ClearMesh();
         ReferenceCameraController referenceCameraController = GetComponent<ReferenceCameraController>();
         referenceCameraController.Clear();
     }
