@@ -5,9 +5,9 @@ using System;
 using maxstAR;
 using JsonFx.Json;
 
-#if UNITY_EDITOR
-using Unity.EditorCoroutines.Editor;
-#endif
+//#if UNITY_EDITOR
+//using Unity.EditorCoroutines.Editor;
+//#endif
 
 public class NavigationController : MonoBehaviour
 {
@@ -61,36 +61,38 @@ public class NavigationController : MonoBehaviour
             { "server_name", server_name}
         };
 
-#if UNITY_EDITOR
-        EditorCoroutineUtility.StartCoroutine(APIController.POST(pathURL + "/v1/path", headers, parameters, 10, (resultString) =>
-        {
-            if (resultString != "")
-            {
-                PathModel[] paths = JsonReader.Deserialize<PathModel[]>(resultString);
-                Dictionary<string, List<PathModel>> pathDictionary = new Dictionary<string, List<PathModel>>();
-                foreach(PathModel eachPathModel in paths)
-                {
-                    if(!pathDictionary.ContainsKey(eachPathModel.location))
-                    {
-                        pathDictionary[eachPathModel.location] = new List<PathModel>();
-                    }
-                    List<PathModel> pathList = pathDictionary[eachPathModel.location];
-                    if(pathList == null)
-                    {
-                        pathList = new List<PathModel>();
-                    }
+//#if UNITY_EDITOR
+//        EditorCoroutineUtility.StartCoroutine(APIController.POST(pathURL + "/v1/path", headers, parameters, 10, (resultString) =>
+//        {
+//            if (resultString != "")
+//            {
+//                Debug.Log(resultString);
+//                PathModel[] paths = JsonReader.Deserialize<PathModel[]>(resultString);
+                
+//                Dictionary<string, List<PathModel>> pathDictionary = new Dictionary<string, List<PathModel>>();
+//                foreach(PathModel eachPathModel in paths)
+//                {
+//                    if(!pathDictionary.ContainsKey(eachPathModel.location))
+//                    {
+//                        pathDictionary[eachPathModel.location] = new List<PathModel>();
+//                    }
+//                    List<PathModel> pathList = pathDictionary[eachPathModel.location];
+//                    if(pathList == null)
+//                    {
+//                        pathList = new List<PathModel>();
+//                    }
 
-                    pathList.Add(eachPathModel);
-                }
-                success(pathDictionary);
-            }
-            else
-            {
-                fail();
-            }
+//                    pathList.Add(eachPathModel);
+//                }
+//                success(pathDictionary);
+//            }
+//            else
+//            {
+//                fail();
+//            }
 
-        }), behaviour);
-#else
+//        }), behaviour);
+//#else
         behaviour.StartCoroutine(APIController.POST(pathURL + "/v1/path", headers, parameters, 10, (resultString) =>
         {
             if(resultString != "")
@@ -118,7 +120,7 @@ public class NavigationController : MonoBehaviour
                 fail();
             }
         }));
-#endif
+//#endif
     }
 
 
